@@ -41,7 +41,7 @@ const store = new Vuex.Store({
   }
 })
 
-store.subscribe((mutations, state) => {
+store.subscribe((mutation, state) => {
   localStorage.setItem('v-memo', JSON.stringify(state.lists))
 })
 
