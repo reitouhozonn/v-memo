@@ -5,20 +5,20 @@ Vue.use(Vuex)
 
 const savedLists = localStorage.getItem('v-memo')
 
-const store = new Vuex.Store({
+const store =  new Vuex.Store({
   state: {
-    lists: savedLists ? JSON.parse(savedLists):[
+    lists: savedLists ? JSON.parse(savedLists): [
       {
         title: 'Backlog',
         cards: [
-          { body: 'English'},
-          { body: 'Mathematics'},
+          { body: 'English' },
+          { body: 'Mathematics' },
         ]
       },
       {
         title: 'Todo',
         cards: [
-          { body: 'Science'}
+          { body: 'Science' }
         ]
       },
       {
@@ -28,26 +28,38 @@ const store = new Vuex.Store({
     ],
   },
   mutations: {
-    addlist(state, payload) {
-      state.lists.push({ title: payload.title, cards:[]})
+    addList(state, payload) {
+      state.lists.push({ title: payload.title, cards:[] })
     },
-    removelist(state, payload) {
+    removeList(state, payload) {
       state.lists.splice(payload.listIndex, 1)
+    },
+    addCardToList(state, payload) {
+      state.lists[payload.listIndex].cards.push({ body: payload.body })
+    },
+    removeCardFromList(state, payload) {
+      state.lists[payload.listIndex].cards.splice(payload.cardIndex, 1)
     },
   },
   actions: {
-    addlist(context, payload) {
-      context.commit('addlist', payload)
+    addList(context, payload) {
+      context.commit('addList', payload)
     },
-    removelist(context, payload) {
-      context.commit('removelist', payload)
+    removeList(context, payload) {
+      context.commit('removeList', payload)
+    },
+    addCardToList(context, payload) {
+      context.commit('addCardToList', payload)
+    },
+    removeCardFromList(context, payload) {
+      context.commit('removeCardFromList', payload)
     },
   },
   getters: {
-  }
+  },
 })
 
-store.subscribe((mutation, state) => {
+store.subscribe((_mutations, state) => {
   localStorage.setItem('v-memo', JSON.stringify(state.lists))
 })
 
